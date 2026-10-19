@@ -1,4 +1,4 @@
-# Restriction Enzyme Explorer
+<img width="1476" height="745" alt="image" src="https://github.com/user-attachments/assets/2e0c4efe-8008-414c-b44b-cdda6afd3f3c" /># Restriction Enzyme Explorer
 
 An interactive bioinformatics tool for finding and visualising restriction-enzyme
 sites in DNA sequences. Upload a FASTA file, select a region, scan it against
@@ -17,7 +17,7 @@ Biopython's REBASE-derived enzyme database, and export a research report.
 ## Quick start
 
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/sim2tech/Restriction-Enzyme-Explorer>
 cd restriction-enzyme-explorer
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
