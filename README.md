@@ -1,4 +1,4 @@
-# 🧬 Restriction Enzyme Explorer
+# Restriction Enzyme Explorer
 
 An interactive bioinformatics tool for finding and visualising restriction-enzyme
 sites in DNA sequences. Upload a FASTA file, select a region, scan it against
