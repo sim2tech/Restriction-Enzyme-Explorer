@@ -17,7 +17,7 @@ Biopython's REBASE-derived enzyme database, and export a research report.
 ## Quick start
 
 ```bash
-git clone <https://github.com/sim2tech/Restriction-Enzyme-Explorer>
+git clone https://github.com/sim2tech/Restriction-Enzyme-Explorer
 cd restriction-enzyme-explorer
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
