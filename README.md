@@ -1,4 +1,4 @@
-<img width="1476" height="745" alt="image" src="https://github.com/user-attachments/assets/2e0c4efe-8008-414c-b44b-cdda6afd3f3c" /># Restriction Enzyme Explorer
+# Restriction Enzyme Explorer
 
 An interactive bioinformatics tool for finding and visualising restriction-enzyme
 sites in DNA sequences. Upload a FASTA file, select a region, scan it against
