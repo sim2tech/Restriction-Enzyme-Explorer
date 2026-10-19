@@ -55,6 +55,19 @@ tests/              Unit tests
 - [ ] Virtual agarose gel image
 - [ ] Docker image / Streamlit Community Cloud deployment
 
+      ## Limitations
+
+This tool is for research and education. Its results are **in silico predictions**, not lab confirmation.
+
+- **Enzyme database:** enzymes come from the REBASE data bundled with the installed Biopython version. The list is not exhaustive and may not be fully current.
+- **Region scanning:** only the selected region is searched. Recognition sites that straddle the region boundary are missed.
+- **Cut positions:** a cut position is the 1-based position of the first base after the top-strand cut (Biopython convention). Fragment sizes ignore overhang lengths.
+- **Enzymes that cut away from their site:** enzymes that cut outside their recognition sequence (e.g. Type IIS) may report cuts near the region edges inaccurately.
+- **Not modelled:** methylation sensitivity (Dam/Dcm/CpG), star activity, buffer conditions, partial digests and DNA supercoiling.
+- **Ambiguous bases:** N, R, Y and other IUPAC codes are matched by IUPAC rules and can add or hide sites.
+- **Input:** DNA FASTA only (IUPAC alphabet). RNA, protein and GenBank files are not supported yet.
+- **Not for clinical or diagnostic use.** Always confirm digests experimentally.
+
 ## Credits
 
 Cock PJA et al., *Biopython*, Bioinformatics 25(11):1422 (2009). Enzyme data from REBASE
