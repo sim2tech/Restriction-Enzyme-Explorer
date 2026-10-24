@@ -1,4 +1,4 @@
-# 🧬 Restriction Enzyme Explorer
+# Restriction Enzyme Explorer
 
 An interactive bioinformatics tool for finding and visualising restriction-enzyme
 sites in DNA sequences. Upload a FASTA file, select a region, scan it against
@@ -63,6 +63,7 @@ tests/              Unit tests
 - Cut position = 1-based position of the first base after the top-strand cut (Biopython convention).
 - Only the selected region is scanned, so sites straddling its boundary are missed.
 - Methylation sensitivity, star activity, buffers and partial digests are not modelled.
+- only available for DNA, not open to RNA or protein models
 - Predictions are in silico; confirm in the lab. Not for clinical use.
 
 ## Roadmap
@@ -72,6 +73,7 @@ tests/              Unit tests
 - [ ] Methylation-sensitivity flags
 - [ ] Virtual agarose gel image
 - [ ] Docker image / Streamlit Community Cloud deployment
+
 
 ## Credits
 
