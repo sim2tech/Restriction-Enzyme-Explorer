@@ -1,4 +1,4 @@
-# 🧬 Restriction Enzyme Explorer
+# Restriction Enzyme Explorer
 
 An interactive bioinformatics tool for finding and visualising restriction-enzyme
 sites in DNA sequences. Upload a FASTA file, select a region, scan it against
@@ -41,7 +41,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Run the tests with `pytest`. The `.streamlit/config.toml` file sets the warm paper theme and blue-grey accent (text is set in Arial Narrow, so it looks best on Windows/Office machines), so keep it next to `app.py`.
+Run the tests with `pytest`.
 
 ## Project layout
 
@@ -61,6 +61,7 @@ tests/              Unit tests
 ## Limitations
 
 - Cut position = 1-based position of the first base after the top-strand cut (Biopython convention).
+- Only available for DNA modules, RNA's and proteins are not supported
 - Only the selected region is scanned, so sites straddling its boundary are missed.
 - Methylation sensitivity, star activity, buffers and partial digests are not modelled.
 - Predictions are in silico; confirm in the lab. Not for clinical use.
