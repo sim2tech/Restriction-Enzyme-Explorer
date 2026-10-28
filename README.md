@@ -1,4 +1,4 @@
-# 🧬 Restriction Enzyme Explorer
+Restriction Enzyme Explorer
 
 An interactive bioinformatics tool for finding and visualising restriction-enzyme
 sites in DNA sequences. Upload a FASTA file, select a region, scan it against
@@ -85,7 +85,7 @@ tests/              Unit tests (tests/data holds a synthetic test plasmid)
 
 - [x] GenBank input with feature annotations
 - [x] Circular map, sequence view and virtual gel
-- [ ] Features on the linear map
+- [x] Features on the linear map
 - [ ] Double-digest buffer compatibility
 - [ ] Methylation-sensitivity flags
 - [ ] Primer design and PCR product preview
