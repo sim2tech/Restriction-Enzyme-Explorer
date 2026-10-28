@@ -30,3 +30,43 @@ def compute_fragments(cut_positions: Iterable[int], start: int, end: int,
         frag_end = ((nxt - 1 - start) % length) + start
         frags.append(Fragment(c, frag_end, size))
     return frags
+
+
+def digest_fragments(cuts, start: int, end: int, circular: bool = False) -> list[Fragment]:
+    """Fragments of a digest with the enzyme(s) at each end.
+
+    ``cuts`` are CutSite-like objects (``.position``, ``.enzyme``). Fragments are
+    returned in sequence order.
+    """
+    from dataclasses import replace
+
+    length = end - start + 1
+
+    def norm(p: int) -> int:
+        return ((p - start) % length) + start if circular else p
+
+    names: dict[int, set] = {}
+    for c in cuts:
+        names.setdefault(norm(c.position), set()).add(c.enzyme)
+
+    def label(pos: int, default: str) -> str:
+        return " / ".join(sorted(names[pos])) if pos in names else default
+
+    out = []
+    for f in compute_fragments([c.position for c in cuts], start, end, circular):
+        left = label(f.start, "start")
+        right_pos = norm(f.end + 1) if circular else f.end + 1
+        right = label(right_pos, "end")
+        out.append(replace(f, left=left, right=right))
+    return out
+
+
+def fragment_sequence(seq: str, fragment: Fragment) -> str:
+    """Top-strand sequence of a fragment (handles circular wrap-around)."""
+    if fragment.start <= fragment.end:
+        return seq[fragment.start - 1:fragment.end]
+    return seq[fragment.start - 1:] + seq[:fragment.end]
+
+
+def format_coordinates(fragment: Fragment) -> str:
+    return f"{fragment.start:,}\u2013{fragment.end:,}"

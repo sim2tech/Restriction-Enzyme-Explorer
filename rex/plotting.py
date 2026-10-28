@@ -19,10 +19,10 @@ MAX_BP_PER_ROW = 1200
 THEMES = {
     "light": dict(paper="#F2EDE3", ink="#2B2926", ink_dim="rgba(43,41,38,0.38)",
                   stem="rgba(43,41,38,0.45)", muted="#7A7164", pink_text="#D81B7A",
-                  hover_bg="#E8E1D3", hover_border="#CFC6B4"),
+                  hover_bg="#E8E1D3", hover_border="#CFC6B4", cut="#C0504D"),
     "dark": dict(paper="#17181A", ink="#E6E4E0", ink_dim="rgba(230,228,224,0.38)",
                  stem="rgba(230,228,224,0.45)", muted="#8B8883", pink_text="#FF6FB1",
-                 hover_bg="#26292C", hover_border="#34373B"),
+                 hover_bg="#26292C", hover_border="#34373B", cut="#E36A63"),
 }
 PINK = "255,61,154"
 PINK_CORE = "#FFB3D6"
@@ -57,8 +57,13 @@ def _pts():
 
 def build_map(rows: list[tuple[int, int]], sites: list[CutSite], *,
               bp_per_row: int = MAX_BP_PER_ROW, highlight: str | None = None,
-              band: str = "orange", theme: str = "light") -> go.Figure:
-    """Draw the given rows (each a (start, end) bp range) with their cut sites."""
+              band: str = "orange", theme: str = "light",
+              labelled: set | None = None, cards: dict | None = None) -> go.Figure:
+    """Draw the given rows (each a (start, end) bp range) with their cut sites.
+
+    ``labelled`` limits which enzymes get a name and stem; every other cut is still
+    drawn as a notch on the band (None labels all of them).
+    """
     c = THEMES.get(theme, THEMES["light"])
     colour = BANDS.get(band, BANDS["orange"])
     width = max(1, min(bp_per_row, MAX_BP_PER_ROW))
@@ -97,12 +102,17 @@ def build_map(rows: list[tuple[int, int]], sites: list[CutSite], *,
         # Cut sites that belong to this row.
         row_sites = sorted((s for s in sites if rs <= s.position <= re_),
                            key=lambda s: (s.position, s.enzyme))
-        for k, s in enumerate(row_sites):
+        k = -1
+        for s in row_sites:
             x = s.position - rs
-            ly = y0 + 0.62 + 0.5 * (k % 4)
             notch_x += [x, x, None]
             notch_y += [y0 - 0.22, y0 + 0.22, None]
-            custom = [s.enzyme, s.site, s.cut_pattern, s.position]
+            if labelled is not None and s.enzyme not in labelled and s.enzyme != highlight:
+                continue
+            k += 1
+            ly = y0 + 0.62 + 0.5 * (k % 4)
+            custom = [s.enzyme, s.site, s.cut_pattern, s.position,
+                      (cards or {}).get((s.enzyme, s.position), "")]
             if s.enzyme == highlight:
                 hl_stem_x += [x, x, None]
                 hl_stem_y += [y0 + 0.22, ly, None]
@@ -125,6 +135,8 @@ def build_map(rows: list[tuple[int, int]], sites: list[CutSite], *,
     fig = go.Figure()
     hover = ("<b>%{customdata[0]}</b><br>cuts before bp %{customdata[3]:,}"
              "<br>site %{customdata[1]}<br>%{customdata[2]}<extra></extra>")
+    # With cards the page shows a rich card on hover, so Plotly's own tooltip is switched off.
+    hov = {"hoverinfo": "none"} if cards else {"hovertemplate": hover}
 
     fig.add_trace(go.Scatter(x=tick_x, y=tick_y, mode="lines", hoverinfo="skip",
                              line=dict(color=c["muted"], width=1), showlegend=False))
@@ -142,7 +154,7 @@ def build_map(rows: list[tuple[int, int]], sites: list[CutSite], *,
                              line=dict(color=c["stem"], width=1), showlegend=False))
     fig.add_trace(go.Scatter(
         x=reg["x"], y=reg["y"], mode="markers+text", text=reg["text"],
-        textposition="top center", customdata=reg["custom"], hovertemplate=hover,
+        textposition="top center", customdata=reg["custom"], **hov,
         textfont=dict(family=FONT, size=13, color=c["ink_dim"] if dim else c["ink"]),
         marker=dict(size=7, color=c["ink_dim"] if dim else c["ink"], line=dict(width=0)),
         showlegend=False))
@@ -159,7 +171,7 @@ def build_map(rows: list[tuple[int, int]], sites: list[CutSite], *,
                 marker=dict(size=size, color=f"rgba({PINK},{alpha})", line=dict(width=0))))
         fig.add_trace(go.Scatter(
             x=hl["x"], y=hl["y"], mode="markers+text", text=hl["text"],
-            textposition="top center", customdata=hl["custom"], hovertemplate=hover,
+            textposition="top center", customdata=hl["custom"], **hov,
             textfont=dict(family=FONT, size=15, color=c["pink_text"]),
             marker=dict(size=9, color=PINK_CORE, line=dict(color=c["pink_text"], width=2)),
             showlegend=False))
@@ -168,11 +180,11 @@ def build_map(rows: list[tuple[int, int]], sites: list[CutSite], *,
     ymax = 2.9
     ymin = -(n - 1) * ROW_H - 1.6
     fig.update_layout(
-        shapes=shapes, showlegend=False, dragmode=False,
+        shapes=shapes, showlegend=False, dragmode="pan",
         paper_bgcolor=c["paper"], plot_bgcolor=c["paper"],
         margin=dict(l=8, r=8, t=8, b=8),
         height=int((ymax - ymin) * PX_PER_UNIT),
-        xaxis=dict(visible=False, range=[-0.015 * width, 1.015 * width], fixedrange=True),
+        xaxis=dict(visible=False, range=[-0.015 * width, 1.015 * width]),   # zoom/pan along x
         yaxis=dict(visible=False, range=[ymin, ymax], fixedrange=True),
         font=dict(family=FONT, color=c["ink"]),
         hoverlabel=dict(bgcolor=c["hover_bg"], bordercolor=c["hover_border"],

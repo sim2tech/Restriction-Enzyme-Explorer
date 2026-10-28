@@ -1,0 +1,78 @@
+LOCUS       pDEMO_REX               2800 bp    DNA     circular SYN 01-JAN-2026
+DEFINITION  Synthetic demo plasmid for Restriction Enzyme Explorer.
+ACCESSION   pDEMO_REX
+COMMENT     Demonstration construct. The T7 promoter, lac operator, RBS, MCS sites,
+            His6 tag and T7 terminator are real short sequences; the insert ORF, AmpR
+            and ori are random placeholders and are not from any published plasmid.
+FEATURES             Location/Qualifiers
+     source          1..2800
+                     /organism="synthetic construct"
+     promoter        101..120
+                     /label="T7 promoter"
+     protein_bind    121..141
+                     /label="lac operator"
+     RBS             160..173
+                     /label="RBS"
+     misc_feature    200..271
+                     /label="MCS"
+     misc_feature    275..292
+                     /label="His6 tag"
+     CDS             299..1078
+                     /label="insert ORF"
+     terminator      1099..1145
+                     /label="T7 terminator"
+     CDS             complement(1600..2460)
+                     /label="AmpR"
+     rep_origin      complement(2480..2740)
+                     /label="ori"
+     misc_feature    join(2761..2800,1..100)
+                     /label="backbone"
+ORIGIN
+        1 tttcctcatg caattcaaaa ccatgtccgt aatgtaggcg aaatagtaaa ccattttacg
+       61 gaggatacca aattcctcct tattcaggac ctaacctgag taatacgact cactataggg
+      121 aattgtgagc ggataacaat tctagccaag ttcaacggca aggagatata cattaggcaa
+      181 tgacggatat atattaaaac atatgaggct agcagggatc caggaattca ggagctcagg
+      241 tcgacagaag cttaggcggc cgcagctcga ggcccaccac caccaccacc acctcattat
+      301 gatgcgtgta tccaacgtga ggaaactatt acatctcacc acggcacgcc cagaccactg
+      361 gcgaaagtgt cttacggcaa gcctgatgtt tagaaagggt cccatctcta aaccttcttc
+      421 gagacgcaac tcaacgaacg cctatcacac ttctataacg attggcctga aggggcactg
+      481 gaatggctgc gttacatgcg tcgtagcgcg caaaggtaat ctctttggtc gtccccattc
+      541 cgagaactgg aatcaacacg cagaggtcag gtgttcattg tcgacggaga ttgttttgaa
+      601 atactctacc tgggtcaact ccccaaccgt cagagctaaa gttcacttgg tcatctcgat
+      661 accgccgcgc gtcacccttt gcgaccccat tcgtgaggtg gcgcgtacag tcaagtcgtg
+      721 gtacgtcaat aaactttgga ttggcgacga caactcgggg atatcgactt acacgatctc
+      781 ggagtattac aggctgctta gatacctact cttctcagct caatcgacgg ttatgtgcca
+      841 tgaatcgaag cgagcatgcc agatccacct gattgataga ggacgccatg tagcagggtt
+      901 atatctgtct aagtggtgga tagttagaag gcacataaga tcatattgtc gtaatctacg
+      961 cctgattaaa ttcgcattat cgacgttttc gacccttggg acacacacaa gatgtcgggc
+     1021 cgcccaaaat atatcgattt ccttacatcc cctcacgcga gagaattatt acggataagt
+     1081 accccaaggg tcgttaccct agcataaccc cttggggcct ctaaacgggt cttgaggggt
+     1141 tttttggcca tctgcgtctg acatcgcatt tgaaacccag taggtactgc cttagttgca
+     1201 ctcctaactc atgttaacgg acttacgggc actagcttct tactgccctc tctgtttctc
+     1261 ttaagggacg tcgagacgcc aagttatgga gtctacccac gtttcggttc cgttctgcag
+     1321 ggccaataga cgagcgatat tattggtgcc tctcgcagtc tggatagatg attgtggaaa
+     1381 gggggcttgg acaattagat tttacggtgt accgcgccat actagggaag ctccccgtgg
+     1441 tggtccggcc aaagattact taggttgggg cgcctcgccc tgccatcggt gttcacaacg
+     1501 gatgatcgag tgcttctcgc tcagttacga gcgtggcatc ggacaagaac gtccttatgt
+     1561 acggcgctac acaaggagat acagagcttg atttgaacct tagcgataaa acaggtgaaa
+     1621 gactaattca ttacccgcca atcttaagta gcgacatgat gattcccacg agtatgtctc
+     1681 aggcagcttg cccccgaagg cgttatatat caccttagaa acatgagccc tagggcccga
+     1741 cacgttgaag gccccgaata tgcgactaga ccgggactcg taaatcagcc agatgcctgt
+     1801 cttgactcca gacgccaaat atacacgtcg gacaggcttg tgcaaaaaac gtgggtagtg
+     1861 atatgatccg tggatgctaa ccaaacgtac agcatcgacc atcaaactcc ggtgttgaga
+     1921 gagcacgttt ttttcggaag ctctgtacgt gttgcaaggg aaataccagt tgaacattcg
+     1981 tatagtcttt ctgggagaaa aaccaaaccc ggaaccagag gagaccagtc cgcatatcac
+     2041 cgatagtatc gggggtgcca gaaattccaa gctagcagcg aacccgcctc gacgaaggtg
+     2101 tgcgtgaaat ctcatcggtc gatcgtggag catcgggtcg caggttggtt ctctgcgcgc
+     2161 ccgggcctga ttatggagac gtgctgtacg ttcgatttgt attgtagaaa tgaatactgt
+     2221 ccgcaccgaa aatgccgaga gtaagacgct gcgactaggt gatggaatct gcatggagag
+     2281 atcagtacta gtcctggagt ctcttcgtgc tagtagcggc gggtctatag cccaaagtgt
+     2341 gtgccactga tatttggcat ccccagcagc tattaaatgt ggtattccgc aacggtcatc
+     2401 cagaatgtgg ctacgccatc caccactcgc gctcattact tccatcctaa gtgaactcat
+     2461 tggcgcattt agttctgaac tccactgtgc agaggaaggt agagctaaaa tcgcgctgta
+     2521 gaggtctcta attttgtaac caccgggaat atatcgaaag ttcttctcta accattatat
+     2581 tacctgagga cttcgaagtc gtcttgcatg atttttacgc ttcgcagtat gtgatctgct
+     2641 atactaggtg gtcacgaggt gcttgtcaat ttaggtaaag cgctgcgagt tcgcccaaaa
+     2701 cgataaggcg ggctgatggc cgcgttccct ggcgctgact aaaagagtta atacgacgat
+     2761 gcagcgacgg gaaggtcgca catcgtcttg gttcgaggta
+//

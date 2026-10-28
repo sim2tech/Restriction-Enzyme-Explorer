@@ -8,22 +8,30 @@ VALID_BASES = set("ACGTRYSWKMBDHVN")  # IUPAC DNA alphabet
 
 @dataclass(frozen=True)
 class FastaRecord:
+    """A sequence record. GenBank input also fills topology and features."""
+
     id: str
     description: str
     sequence: str
+    topology: str = "linear"
+    features: tuple = ()
 
 
-def _build_record(header: str, chunks: list[str]) -> FastaRecord:
-    seq = "".join("".join(chunks).split()).upper()
+def clean_sequence(raw: str, label: str = "unnamed") -> str:
+    """Upper-case, strip whitespace and validate an IUPAC DNA sequence."""
+    seq = "".join(raw.split()).upper()
     if not seq:
-        raise ValueError(f"Record '{header or 'unnamed'}' has no sequence.")
+        raise ValueError(f"Record '{label}' has no sequence.")
     invalid = sorted(set(seq) - VALID_BASES)
     if invalid:
         hint = " (RNA? convert U to T first)" if "U" in invalid else ""
         raise ValueError(
-            f"Record '{header or 'unnamed'}' contains non-DNA characters: "
-            f"{', '.join(invalid)}{hint}"
-        )
+            f"Record '{label}' contains non-DNA characters: {', '.join(invalid)}{hint}")
+    return seq
+
+
+def _build_record(header: str, chunks: list[str]) -> FastaRecord:
+    seq = clean_sequence("".join(chunks), header or "unnamed")
     parts = header.split(None, 1)
     return FastaRecord(
         id=parts[0] if parts else "unnamed",

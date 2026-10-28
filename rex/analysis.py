@@ -5,6 +5,7 @@ from Bio import Restriction
 from Bio.Seq import Seq
 
 from .models import CutSite, EnzymeInfo
+from .motif import reverse_complement
 
 # A handful of enzymes most people recognise from cloning work.
 COMMON_ENZYMES = [
@@ -25,6 +26,13 @@ def get_enzyme(name: str):
         return Restriction.AllEnzymes.get(name)
     except (ValueError, KeyError, AttributeError) as exc:
         raise ValueError(f"Unknown enzyme: {name}") from exc
+
+
+def _isoschizomers(enz, name: str) -> tuple:
+    try:
+        return tuple(sorted(e.__name__ for e in enz.isoschizomers() if e.__name__ != name))
+    except Exception:
+        return ()
 
 
 def describe_enzyme(name: str) -> EnzymeInfo:
@@ -53,7 +61,24 @@ def describe_enzyme(name: str) -> EnzymeInfo:
         commercial=bool(enz.is_comm()),
         opt_temp=getattr(enz, "opt_temp", None),
         inact_temp=getattr(enz, "inact_temp", None),
+        isoschizomers=_isoschizomers(enz, name),
     )
+
+
+def bottom_shift(pattern: str, site: str) -> int | None:
+    """Offset of the bottom-strand cut from the top-strand cut, e.g. EcoRI G^AATT_C -> +4.
+
+    Only stated for palindromic sites, where the pattern reads the same on both
+    strands. Returns None when the pattern cannot be read reliably.
+    """
+    try:
+        if reverse_complement(site) != site or "^" not in pattern or "_" not in pattern:
+            return None if "^" in pattern and "_" in pattern else (0 if "^" in pattern else None)
+        top = len([c for c in pattern[:pattern.index("^")] if c.isalpha()])
+        bottom = len([c for c in pattern[:pattern.index("_")] if c.isalpha()])
+        return bottom - top
+    except Exception:
+        return None
 
 
 def find_sites(sequence: str, enzyme_names: list[str], start: int = 1,
@@ -78,6 +103,9 @@ def find_sites(sequence: str, enzyme_names: list[str], start: int = 1,
             pattern = enz.elucidate()
         except Exception:
             pattern = "n/a"
+        shift = bottom_shift(pattern, enz.site)
         for pos in enz.search(region, linear=linear):
-            sites.append(CutSite(name, pos + start - 1, enz.site, pattern))
+            top = pos + start - 1
+            sites.append(CutSite(name, top, enz.site, pattern,
+                                 None if shift is None else top + shift))
     return sorted(sites, key=lambda s: (s.position, s.enzyme))

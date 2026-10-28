@@ -18,6 +18,8 @@ LIMITATIONS = [
     "Only the selected region is scanned: recognition sites that straddle the region "
     "boundary are missed, and enzymes that cut outside their recognition site "
     "(e.g. Type IIS) may report cuts near the edges incorrectly.",
+    "The virtual gel is an empirical model of agarose migration, not a measurement; "
+    "real band positions depend on buffer, voltage, DNA topology and loading.",
     "Cut positions are top-strand cuts (position of the first base after the cut, 1-based); "
     "fragment sizes ignore overhang lengths.",
     "Ambiguous bases (N, R, Y, ...) are matched using IUPAC rules and can inflate or hide sites.",
@@ -74,8 +76,8 @@ def build_markdown_report(*, record_id: str, description: str, seq_len: int,
 
     if digest_enzymes:
         lines += ["", f"## Simulated digest ({', '.join(digest_enzymes)})",
-                  "| Fragment | Start | End | Length (bp) |", "|---|---|---|---|"]
-        lines += [f"| {i} | {f.start:,} | {f.end:,} | {f.length:,} |"
+                  "| Fragment | Ends | Coordinates | Length (bp) |", "|---|---|---|---|"]
+        lines += [f"| {i} | {f.left} \u2013 {f.right} | {f.start:,}\u2013{f.end:,} | {f.length:,} |"
                   for i, f in enumerate(fragments, 1)]
 
     lines += ["", "## Enzyme references",
